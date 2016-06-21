@@ -31,12 +31,21 @@ public class ScriptControllerTest {
 
     @Test
     public void postScript() throws Exception {
-
+	
 	this.mvc.perform(post("/script")
 		.content("INT. REBEL BLOCKADE RUNNER - MAIN PASSAGEWAY")
 		.contentType(MediaType.TEXT_PLAIN)
 		.accept(MediaType.APPLICATION_JSON_UTF8))
-		.andExpect(status().isOk())
-		.andExpect(content().json("{\"message\":\"Movie script successfully received\"}"));
+	.andExpect(status().isOk())
+	.andExpect(content().json("{\"message\":\"Movie script successfully received\"}"));
+    }
+    
+    @Test
+    public void postInvalidScript() throws Exception {
+
+	this.mvc.perform(post("/script")
+		.contentType(MediaType.TEXT_PLAIN)
+		.accept(MediaType.APPLICATION_JSON_UTF8))
+		.andExpect(status().is4xxClientError());
     }
 }

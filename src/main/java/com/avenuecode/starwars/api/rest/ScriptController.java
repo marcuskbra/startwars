@@ -22,7 +22,10 @@ public class ScriptController {
 	return MSG;
     }
 
-    @RequestMapping(path = "/script", method = RequestMethod.POST, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(path = "/script", 
+	    method = RequestMethod.POST, 
+	    consumes = MediaType.TEXT_PLAIN_VALUE, 
+	    produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody Map<String, String> postScript(@RequestBody(required = true) String script) {
 	final MovieScript movieScript = new MovieScript(script);
 	System.out.println(movieScript.getContent());
