@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.avenuecode.starwars.api.model.MovieCharacter;
 
 @Service
-@Configurable
 public class MovieCharacterService {
 
     public MovieCharacter getOne(Integer id) {
