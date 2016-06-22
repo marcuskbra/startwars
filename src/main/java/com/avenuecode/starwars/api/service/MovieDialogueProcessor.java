@@ -23,7 +23,7 @@ public class MovieDialogueProcessor {
 	
     }
     
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         // using pattern with flags
 	
 	String ex1 = "INT. REBEL BLOCKADE RUNNER - MAIN PASSAGEWAY"

@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.avenuecode.starwars.api.model.MovieSetting;
 
-public interface MovieSettingsRepository extends CrudRepository<MovieSetting, Integer> {
+public interface MovieSettingRepository extends CrudRepository<MovieSetting, Integer> {
 }
