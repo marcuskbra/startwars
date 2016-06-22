@@ -14,8 +14,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.avenuecode.starwars.Application;
 import com.avenuecode.starwars.api.rest.MovieCharacterController;
-import com.avenuecode.starwars.app.Application;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)

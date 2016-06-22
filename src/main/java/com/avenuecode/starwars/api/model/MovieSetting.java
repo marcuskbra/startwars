@@ -2,10 +2,20 @@ package com.avenuecode.starwars.api.model;
 
 import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+@Entity
 public class MovieSetting {
 
+    @Id
+    @GeneratedValue
     private int id;
     private String name;
+    
+    @ManyToMany
     private Set<MovieCharacter> characters;
 
     public int getId() {

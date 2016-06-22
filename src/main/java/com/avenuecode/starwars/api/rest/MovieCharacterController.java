@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,4 +31,11 @@ public class MovieCharacterController {
 	return this.characterService.getOne(id);
     }
 
+    @RequestMapping(path = "/add/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody MovieCharacter saveExample(@PathVariable String name) {
+	final MovieCharacter mc = new MovieCharacter();
+	mc.setName(name);
+	final boolean saved = this.characterService.save(mc);
+	return mc;
+    }
 }

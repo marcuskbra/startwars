@@ -1,7 +1,5 @@
 package com.avenuecode.starwars.api.model;
 
-import java.util.Map;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -11,7 +9,6 @@ public class MovieCharacter {
     @Id
     private int id;
     private String name;
-    private Map<String, Integer> wordCounts;
 
     public int getId() {
 	return this.id;
@@ -27,14 +24,6 @@ public class MovieCharacter {
 
     public void setName(String name) {
 	this.name = name;
-    }
-
-    public Map<String, Integer> getWordCounts() {
-	return this.wordCounts;
-    }
-
-    public void setWordCounts(Map<String, Integer> wordCounts) {
-	this.wordCounts = wordCounts;
     }
 
 }
