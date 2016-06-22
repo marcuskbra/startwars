@@ -4,6 +4,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.net.URL;
+import java.nio.charset.Charset;
+
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,8 +36,21 @@ public class ScriptControllerTest {
     @Test
     public void postScript() throws Exception {
 	
+	String movieScript = "INT. REBEL BLOCKADE RUNNER - MAIN PASSAGEWAY";
+	postScript(movieScript);
+    }
+    
+    @Test
+    public void postScriptFull() throws Exception {
+	String pathname = "screenplay.txt";
+	URL systemResource = ClassLoader.getSystemResource(pathname);
+	String movieScript = IOUtils.toString(systemResource, Charset.defaultCharset());
+	postScript(movieScript);
+    }
+
+    private void postScript(String movieScript) throws Exception {
 	this.mvc.perform(post("/script")
-		.content("INT. REBEL BLOCKADE RUNNER - MAIN PASSAGEWAY")
+		.content(movieScript)
 		.contentType(MediaType.TEXT_PLAIN)
 		.accept(MediaType.APPLICATION_JSON_UTF8))
 	.andExpect(status().isOk())

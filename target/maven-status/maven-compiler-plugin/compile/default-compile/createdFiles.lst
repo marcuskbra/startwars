@@ -1,1 +1,6 @@
-com/avenuecode/starwars/app/Application.class
+com\avenuecode\starwars\api\model\MovieScript.class
+com\avenuecode\starwars\api\repository\MovieCharacterRepository.class
+com\avenuecode\starwars\api\model\MovieSetting.class
+com\avenuecode\starwars\api\rest\ScriptController.class
+com\avenuecode\starwars\api\model\MovieCharacter.class
+com\avenuecode\starwars\app\Application.class
