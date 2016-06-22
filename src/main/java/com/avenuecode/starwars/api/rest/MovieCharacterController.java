@@ -22,12 +22,12 @@ public class MovieCharacterController {
     
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody Collection<MovieCharacter> listAll() {
-	return characterService.listAll();
+	return this.characterService.listAll();
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody MovieCharacter get(@RequestParam(required = true) Integer id) {
-	return characterService.getOne(id);
+	return this.characterService.getOne(id);
     }
 
 }
