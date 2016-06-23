@@ -33,17 +33,7 @@ public class ScriptController {
 
     @RequestMapping(path = "/script", method = RequestMethod.POST, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody Map<String, String> postScript(@RequestBody(required = true) String script) {
-	final MovieScript movieScript = new MovieScript(script);
 
-	SparkConf conf = new SparkConf().setAppName("Simple Application").setMaster("local[2]").set("spark.executor.memory","1g");;
-	JavaSparkContext sc = new JavaSparkContext(conf);
-	
-	Pattern pattern = Pattern.compile(MovieDialogueProcessor.scene_regex, Pattern.MULTILINE);
-	
-	List<String> list = Arrays.asList(pattern.split(script));
-	
-	JavaRDD<String> parallelize = sc.parallelize(list);
-	
 	
 	final Map<String, String> response = new HashMap<>();
 	response.put("message", "Movie script successfully received");
