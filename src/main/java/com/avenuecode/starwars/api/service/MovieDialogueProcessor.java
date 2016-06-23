@@ -32,13 +32,22 @@ public class MovieDialogueProcessor {
 	for (String scene : splited) {
 
 	    String[] lines = scene.split("\\r\\n|\\n|\\r");
+	    String currentSettingTitle = null;
 
 	    for (String line : lines) {
-		if (isSettingTitle(line)) {
-		    String scriptTitle = getSettingTitle(scene);
-		    System.out.println(scriptTitle);
-		} else if (isCharacterName(line)){
-		    System.out.println(line.trim());
+		final boolean isSettingTitleLine = isSettingTitle(line);
+		if (isSettingTitleLine) {
+		    currentSettingTitle = getSettingTitle(scene);
+		    System.out.println(currentSettingTitle);
+		    //save setting?
+		    
+		} else if (currentSettingTitle != null) {
+		    
+		    if (isCharacterName(line)){
+			final String characterName = line.trim();
+			
+			System.out.println(characterName);
+		    }
 		}
 	    }
 
@@ -56,7 +65,7 @@ public class MovieDialogueProcessor {
     }
 
     private boolean isCharacterName(String line) {
-	return line.startsWith(CHARACTER_NAME_PREFIX);
+	return line.startsWith(CHARACTER_NAME_PREFIX) && StringUtils.isNotBlank(line);
     }
 
     private boolean isSettingTitle(String string) {

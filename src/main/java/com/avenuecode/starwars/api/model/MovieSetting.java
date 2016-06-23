@@ -13,6 +13,7 @@ public class MovieSetting {
     @Id
     @GeneratedValue
     private int id;
+    
     private String name;
     
     @ManyToMany
