@@ -20,7 +20,7 @@ public class MovieCharacterExtractorTest {
     private MovieCharacterExtractor extractor = new MovieCharacterExtractor(null);
 
     @Test
-    public void postScriptFull() throws Exception {
+    public void textPartialScript() throws Exception {
 	String pathname = "screenplay.txt";
 	URL systemResource = ClassLoader.getSystemResource(pathname);
 	String movieScript = IOUtils.toString(systemResource, Charset.forName("UTF-8"));

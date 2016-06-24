@@ -20,6 +20,7 @@ public class MovieCharacterExtractor implements Extractor {
     }
 
     @Override
+    // TODO: passar como parametro os objetos que devem ser extraidos
     public String extract(String[] settingLines) {
 	Map<String, List<String>> phrases = new HashMap<String, List<String>>();
 
