@@ -21,7 +21,8 @@ public class MovieCharacterExtractorTest {
 
     @Test
     public void textPartialScript() throws Exception {
-	String pathname = "screenplay.txt";
+	//String pathname = "screenplay.txt";
+	String pathname = "movie-setting-1.txt";
 	URL systemResource = ClassLoader.getSystemResource(pathname);
 	String movieScript = IOUtils.toString(systemResource, Charset.forName("UTF-8"));
 	String extracted = this.extractor.extract(movieScript.split(MovieDialogueProcessor.NEW_LINE_REGEX));

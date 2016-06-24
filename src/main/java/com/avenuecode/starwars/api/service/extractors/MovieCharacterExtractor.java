@@ -24,12 +24,15 @@ public class MovieCharacterExtractor implements Extractor {
     public String extract(String[] settingLines) {
 	Map<String, List<String>> phrases = new HashMap<String, List<String>>();
 
+	String characterName = null;
 	for (int i = 0; i < settingLines.length; i++) {
 	    String line = settingLines[i];
-	    String characterName = null;
 	    if (isCharacterName(line)) {
 		characterName = line.trim();
-		phrases.putIfAbsent(characterName, new ArrayList<String>());
+		if (!phrases.containsKey(characterName)) {
+		    phrases.put(characterName, new ArrayList<String>());
+		}
+		continue;
 	    } else if (isCharacterSpeak(line)) {
 		if (phrases.containsKey(characterName)) {
 		    phrases.get(characterName).add(line.trim());
