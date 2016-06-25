@@ -1,55 +1,70 @@
 package com.avenuecode.starwars.api.service.extractors;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 
-public class MovieCharacterExtractor implements Extractor {
+import com.avenuecode.starwars.api.model.MovieCharacter;
+import com.avenuecode.starwars.api.model.WordCount;
 
-    private Extractor delegate;
+public class MovieCharacterExtractor implements Extractor<String[], Collection<MovieCharacter>> {
+
+    private final Extractor<String, Collection<WordCount>> delegate;
 
     private static final String CHARACTER_NAME_PREFIX = "                      ";
     private static final String CHARACTER_SPEAK_PREFIX = "          ";
 
-    public MovieCharacterExtractor(Extractor delegate) {
+    public MovieCharacterExtractor(final Extractor<String, Collection<WordCount>> delegate) {
 	this.delegate = delegate;
     }
 
     @Override
-    // TODO: passar como parametro os objetos que devem ser extraidos
-    public String extract(String[] settingLines) {
-	Map<String, List<String>> phrases = new HashMap<String, List<String>>();
+    public Collection<MovieCharacter> extract(final String[] settingLines) {
+	final Map<String, StringBuilder> phrases = extractPhrases(settingLines);
+
+	final Set<MovieCharacter> characters = new HashSet<>();
+	phrases.forEach((k, v) -> {
+	    final MovieCharacter movieCharacter = new MovieCharacter();
+	    movieCharacter.setName(k);
+
+	    if (this.delegate != null) {
+		final Collection<WordCount> wordCounts = this.delegate.extract(v.toString());
+		movieCharacter.setWordCounts(wordCounts);
+	    }
+	    characters.add(movieCharacter);
+	});
+
+	return characters;
+    }
+
+    private Map<String, StringBuilder> extractPhrases(final String[] settingLines) {
+	final Map<String, StringBuilder> phrases = new HashMap<>();
 
 	String characterName = null;
-	for (int i = 0; i < settingLines.length; i++) {
-	    String line = settingLines[i];
+	for (final String line : settingLines) {
 	    if (isCharacterName(line)) {
 		characterName = line.trim();
 		if (!phrases.containsKey(characterName)) {
-		    phrases.put(characterName, new ArrayList<String>());
+		    phrases.put(characterName, new StringBuilder());
 		}
-		continue;
-	    } else if (isCharacterSpeak(line)) {
+	    } else if (isCharacterSpeaking(line)) {
 		if (phrases.containsKey(characterName)) {
-		    phrases.get(characterName).add(line.trim());
+		    phrases.get(characterName).append(" ").append(line.trim());
 		}
 	    }
 	}
-
-	// return phrases;
-	return null;
+	return phrases;
     }
 
-    private boolean isCharacterSpeak(String line) {
+    private boolean isCharacterSpeaking(final String line) {
 	return StringUtils.isNotBlank(line) && line.startsWith(CHARACTER_SPEAK_PREFIX);
     }
 
-    private boolean isCharacterName(String line) {
+    private boolean isCharacterName(final String line) {
 	return StringUtils.isNotBlank(line) && line.startsWith(CHARACTER_NAME_PREFIX);
     }
-
 }

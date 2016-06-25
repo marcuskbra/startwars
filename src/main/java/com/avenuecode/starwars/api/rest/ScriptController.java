@@ -1,16 +1,9 @@
 package com.avenuecode.starwars.api.rest;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.api.java.JavaSparkContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +18,9 @@ import com.avenuecode.starwars.api.service.MovieDialogueProcessor;
 public class ScriptController {
 
     private static final String MSG = "May the Force be with you!";
+    
+    @Autowired
+    private MovieDialogueProcessor processor;
 
     @RequestMapping("/")
     public String index() {
@@ -34,6 +30,7 @@ public class ScriptController {
     @RequestMapping(path = "/script", method = RequestMethod.POST, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody Map<String, String> postScript(@RequestBody(required = true) String script) {
 
+	this.processor.process(new MovieScript(script));
 	
 	final Map<String, String> response = new HashMap<>();
 	response.put("message", "Movie script successfully received");

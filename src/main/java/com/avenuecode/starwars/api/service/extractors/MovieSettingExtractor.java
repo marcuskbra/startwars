@@ -1,32 +1,46 @@
 package com.avenuecode.starwars.api.service.extractors;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class MovieSettingExtractor implements Extractor {
+import com.avenuecode.starwars.api.model.MovieCharacter;
+import com.avenuecode.starwars.api.model.MovieSetting;
+
+public class MovieSettingExtractor implements Extractor<String[], MovieSetting> {
 
     private static final String[] SCRIPT_TITLES_PREFIXES = new String[] { "INT. ", "EXT. ", "INT./EXT. " };
     private static final String SETTING_REGEX = "\\b(INT\\.{1}\\/{1}EXT.\\s)\\b|\\b(INT.\\s)\\b|[^/]\\b(EXT.\\s)\\b";
 
-    private Extractor delegate;
+    private Extractor<String[], Collection<MovieCharacter>> delegate;
 
-    public MovieSettingExtractor(Extractor delegate) {
+    public MovieSettingExtractor(Extractor<String[], Collection<MovieCharacter>> delegate) {
 	this.delegate = delegate;
     }
 
     @Override
-    public String extract(String[] settingLines) {
-	
+    public MovieSetting extract(String[] settingLines) {
 
 	if (settingLines.length > 0 && isSettingTitle(settingLines[0])) {
 	    String settingTitle = getSettingTitle(settingLines[0]);
 
-	    String[] range = Arrays.copyOfRange(settingLines, 1, settingLines.length);
+	    if (StringUtils.isNotBlank(settingTitle)) {
 
-	    this.delegate.extract(range);
+		MovieSetting movieSetting = new MovieSetting();
+		movieSetting.setName(settingTitle);
+
+		String[] range = Arrays.copyOfRange(settingLines, 1, settingLines.length);
+
+		if (this.delegate != null) {
+		    Collection<MovieCharacter> characters = this.delegate.extract(range);
+		    movieSetting.setCharacters(characters);
+		}
+
+		return movieSetting;
+	    }
 	}
 
 	return null;
@@ -36,7 +50,7 @@ public class MovieSettingExtractor implements Extractor {
 	return StringUtils.indexOfAny(string, SCRIPT_TITLES_PREFIXES) == 0;
     }
 
-    private static String getSettingTitle(String str) {
+    private String getSettingTitle(String str) {
 	Pattern pattern = Pattern.compile(SETTING_REGEX);
 	Matcher matcher = pattern.matcher(str);
 	if (matcher.find()) {
@@ -46,7 +60,7 @@ public class MovieSettingExtractor implements Extractor {
 		return title;
 	    }
 	}
-	return "";
+	return null;
     }
 
 }
