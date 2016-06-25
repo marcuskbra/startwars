@@ -14,7 +14,7 @@ import com.avenuecode.starwars.api.model.WordCount;
 
 public class WordCountExtractor implements Extractor<String, Collection<WordCount>> {
 
-    private static final String REGEX = "[\\s\\?\\-,_\".!~*()]";
+    private static final String REGEX = "[\\s\\?\\-,;_\".!~*()]";
     private final Extractor<?, ?> delegate;
 
     public WordCountExtractor(final Extractor<?, ?> delegate) {
@@ -41,10 +41,9 @@ public class WordCountExtractor implements Extractor<String, Collection<WordCoun
 	if (StringUtils.isNotBlank(words)) {
 	    String[] splited = words.toLowerCase().split(REGEX);
 	    Map<String, Integer> counts = Arrays.asList(splited).stream()
-		    .filter(s -> StringUtils.isNotBlank(s))
+		    .filter(w -> StringUtils.isNotBlank(w))
 		    .collect(Collectors
-			    .toMap(w -> w, 
-				    w -> 1, Integer::sum));
+			    .toMap(w -> w, w -> 1, Integer::sum));
 	    return counts;
 	} 
 

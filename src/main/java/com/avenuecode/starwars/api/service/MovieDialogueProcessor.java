@@ -2,6 +2,8 @@ package com.avenuecode.starwars.api.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,26 @@ public class MovieDialogueProcessor {
 
     
     public Collection<MovieSetting> process(MovieScript script) {
+	Collection<MovieSetting> mls = getScriptDetails(script);
+	Map<MovieCharacter, Collection<WordCount>> m = new HashMap<>();
+	
+	mls.forEach(setting -> {
+	    setting.getCharacters().forEach(character -> {
+		if (m.containsKey(character)) {
+		    m.get(character).addAll(character.getWordCounts());
+		} else {
+		    m.put(character, new ArrayList<>(character.getWordCounts()));
+		}
+	    });
+	});
+
+
+	
+	return mls;
+    }
+
+
+    private Collection<MovieSetting> getScriptDetails(MovieScript script) {
 	String[] splited = script.getContent().split(SETTING_REGEX_LOOKAHEAD);
 
 	Extractor<String[], MovieSetting> settingExtractor = buildExtractors();
@@ -31,9 +53,10 @@ public class MovieDialogueProcessor {
 	for (String settingString : splited) {
 	    String[] settingLines = settingString.split(NEW_LINE_REGEX);
 	    MovieSetting extracted = settingExtractor.extract(settingLines);
-	    mls.add(extracted);
+	    if (extracted != null) {
+		mls.add(extracted);
+	    }
 	}
-
 	return mls;
     }
 

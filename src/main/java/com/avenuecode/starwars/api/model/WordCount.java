@@ -73,7 +73,7 @@ public class WordCount {
 
     @Override
     public String toString() {
-	return String.format("WordCount [word=%s, count=%s]", this.word, this.count);
+	return String.format("[word=%s, count=%s]", this.word, this.count);
     }
 
 }

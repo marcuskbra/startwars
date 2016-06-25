@@ -72,7 +72,7 @@ public class WordCountExtractorTest {
 	words.forEach((k,v) -> {
 	    assertThat(k, not(isEmptyOrNullString()));
 	    assertThat(k,
-		    not(stringContainsInOrder(Arrays.asList("?", "-", ",", "_", "\"", ".", "!", "~", "*", "(", ")"))));
+		    not(stringContainsInOrder(Arrays.asList("?", "-", ",", ";", ":", "_", "\"", ".", "!", "~", "*", "(", ")"))));
 	    assertThat(v, not(nullValue()));
 	    assertThat(v, greaterThan(0));
 	});
