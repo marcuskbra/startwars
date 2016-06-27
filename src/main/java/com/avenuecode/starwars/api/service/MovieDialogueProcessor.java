@@ -70,7 +70,7 @@ public class MovieDialogueProcessor {
     }
 
     public void validateScript(final MovieScript script) {
-	final boolean exists = this.scriptRepository.exists(script.getMd5());
+	final boolean exists = this.scriptRepository.exists(script.getId());
 	if (!exists) {
 	    this.scriptRepository.save(script);
 	} else {

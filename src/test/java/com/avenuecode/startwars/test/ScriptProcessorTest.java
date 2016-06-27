@@ -48,7 +48,7 @@ public class ScriptProcessorTest {
     }
 
     private Collection<MovieSetting> postScript(String movieScript) throws Exception {
-	MovieScript ms = new MovieScript(movieScript);
+	MovieScript ms = new MovieScript("123", movieScript);
 	this.proc.process(ms);
 	return null;
     }

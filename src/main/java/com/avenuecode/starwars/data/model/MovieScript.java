@@ -8,7 +8,7 @@ import javax.persistence.Lob;
 public final class MovieScript {
 
     @Id
-    private String md5;
+    private String id;
 
     @Lob
     private String content;
@@ -16,13 +16,13 @@ public final class MovieScript {
     MovieScript() {
     }
     
-    public MovieScript(String md5, String content) {
-	this.md5 = md5;
+    public MovieScript(String id, String content) {
+	this.id = id;
 	this.content = content;
     }
 
-    public String getMd5() {
-	return this.md5;
+    public String getId() {
+	return this.id;
     }
 
     public String getContent() {
@@ -33,7 +33,7 @@ public final class MovieScript {
     public int hashCode() {
 	final int prime = 31;
 	int result = 1;
-	result = prime * result + ((this.md5 == null) ? 0 : this.md5.hashCode());
+	result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
 	result = prime * result + ((this.content == null) ? 0 : this.content.hashCode());
 	return result;
     }
@@ -47,10 +47,10 @@ public final class MovieScript {
 	if (getClass() != obj.getClass())
 	    return false;
 	MovieScript other = (MovieScript) obj;
-	if (this.md5 == null) {
-	    if (other.md5 != null)
+	if (this.id == null) {
+	    if (other.id != null)
 		return false;
-	} else if (!this.md5.equals(other.md5))
+	} else if (!this.id.equals(other.id))
 	    return false;
 	if (this.content == null) {
 	    if (other.content != null)
