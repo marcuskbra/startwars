@@ -22,7 +22,7 @@ public class MovieSettingController {
     
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody Collection<MovieSetting> listAll() {
-	return this.settingService.listAll();
+	return this.settingService.findAll();
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

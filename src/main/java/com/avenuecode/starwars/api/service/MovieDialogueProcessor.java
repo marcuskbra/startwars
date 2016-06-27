@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.avenuecode.starwars.api.model.MovieCharacter;
 import com.avenuecode.starwars.api.model.MovieScript;
 import com.avenuecode.starwars.api.model.WordCount;
-import com.avenuecode.starwars.api.repository.CharacterWordsRepository;
 import com.avenuecode.starwars.api.repository.MovieCharacterRepository;
 import com.avenuecode.starwars.api.service.extractors.CharacterPhrasesExtractor;
 import com.avenuecode.starwars.api.service.extractors.MovieSettingExtractor;
@@ -22,9 +21,6 @@ public class MovieDialogueProcessor {
     private static final String NEW_LINE_REGEX = "\\r\\n|\\n|\\r";
     private static final String SETTING_REGEX = "\\b(INT\\.{1}\\/{1}EXT.\\s)\\b|\\b(INT.\\s)\\b|(EXT.\\s)\\b";
     private static final String SETTING_REGEX_LOOKAHEAD = "(?=" + SETTING_REGEX + ")";
-
-    @Autowired
-    private CharacterWordsRepository wordsRepository;
 
     @Autowired
     private MovieCharacterRepository characterRepository;
