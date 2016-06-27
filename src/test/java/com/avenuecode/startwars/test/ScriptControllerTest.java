@@ -34,13 +34,6 @@ public class ScriptControllerTest {
     }
 
     @Test
-    public void postScript() throws Exception {
-	
-	String movieScript = "INT. REBEL BLOCKADE RUNNER - MAIN PASSAGEWAY";
-	postScript(movieScript);
-    }
-    
-    @Test
     public void postScriptFull() throws Exception {
 	String pathname = "screenplay.txt";
 	URL systemResource = ClassLoader.getSystemResource(pathname);

@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.avenuecode.starwars.Application;
 import com.avenuecode.starwars.api.service.extractors.MovieCharacterExtractor;
-import com.avenuecode.starwars.data.model.MovieCharacter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -33,11 +32,8 @@ public class MovieCharacterExtractorTest {
 	URL systemResource = ClassLoader.getSystemResource(pathname);
 	String movieScript = IOUtils.toString(systemResource, Charset.forName("UTF-8"));
 	Collection<String> extracted = this.extractor.extractCharactersNames(movieScript.split(NEW_LINE_REGEX));
-	MovieCharacter expected = new MovieCharacter();
-	expected.setId(0);
-	expected.setName("THREEPIO");
-	Collection<MovieCharacter> expectedList = new HashSet<MovieCharacter>();
-	expectedList.add(expected);
+	Collection<String> expectedList = new HashSet<>();
+	expectedList.add("THREEPIO");
 	assertThat(expectedList, is(extracted));
     }
 
