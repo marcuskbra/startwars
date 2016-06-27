@@ -1,70 +1,25 @@
 package com.avenuecode.starwars.api.service.extractors;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
+public class MovieCharacterExtractor {
 
-import com.avenuecode.starwars.api.model.MovieCharacter;
-import com.avenuecode.starwars.api.model.WordCount;
+    private static final String CHARACTER_NAME_REGEX = "(^\\s{22})\\S[A-Z].*$";
 
-public class MovieCharacterExtractor implements Extractor<String[], Collection<MovieCharacter>> {
+    public Set<String> extractCharactersNames(final String[] settingLines) {
+	final Set<String> charactersNames = new HashSet<>();
 
-    private final Extractor<String, Collection<WordCount>> delegate;
-
-    private static final String CHARACTER_NAME_PREFIX = "                      ";
-    private static final String CHARACTER_SPEAK_PREFIX = "          ";
-
-    public MovieCharacterExtractor(final Extractor<String, Collection<WordCount>> delegate) {
-	this.delegate = delegate;
-    }
-
-    @Override
-    public Collection<MovieCharacter> extract(final String[] settingLines) {
-	final Map<String, StringBuilder> phrases = extractPhrases(settingLines);
-
-	final Set<MovieCharacter> characters = new HashSet<>();
-	phrases.forEach((k, v) -> {
-	    final MovieCharacter movieCharacter = new MovieCharacter();
-	    movieCharacter.setName(k);
-
-	    if (this.delegate != null) {
-		final Collection<WordCount> wordCounts = this.delegate.extract(v.toString());
-		movieCharacter.setWordCounts(wordCounts);
-	    }
-	    characters.add(movieCharacter);
-	});
-
-	return characters;
-    }
-
-    private Map<String, StringBuilder> extractPhrases(final String[] settingLines) {
-	final Map<String, StringBuilder> phrases = new HashMap<>();
-
-	String characterName = null;
 	for (final String line : settingLines) {
 	    if (isCharacterName(line)) {
-		characterName = line.trim();
-		if (!phrases.containsKey(characterName)) {
-		    phrases.put(characterName, new StringBuilder());
-		}
-	    } else if (isCharacterSpeaking(line)) {
-		if (phrases.containsKey(characterName)) {
-		    phrases.get(characterName).append(" ").append(line.trim());
-		}
+		charactersNames.add(line.trim());
 	    }
 	}
-	return phrases;
-    }
-
-    private boolean isCharacterSpeaking(final String line) {
-	return StringUtils.isNotBlank(line) && line.startsWith(CHARACTER_SPEAK_PREFIX);
+	return charactersNames;
     }
 
     private boolean isCharacterName(final String line) {
-	return StringUtils.isNotBlank(line) && line.startsWith(CHARACTER_NAME_PREFIX);
+	return Pattern.matches(CHARACTER_NAME_REGEX, line);
     }
 }

@@ -24,7 +24,7 @@ public class MovieCharacterExtractorTest {
 
     private static final String NEW_LINE_REGEX = "\\r\\n|\\n|\\r";
 
-    private MovieCharacterExtractor extractor = new MovieCharacterExtractor(null);
+    private MovieCharacterExtractor extractor = new MovieCharacterExtractor();
 
     @Test
     public void testPartialScript() throws Exception {
@@ -32,7 +32,7 @@ public class MovieCharacterExtractorTest {
 	String pathname = "movie-setting-1.txt";
 	URL systemResource = ClassLoader.getSystemResource(pathname);
 	String movieScript = IOUtils.toString(systemResource, Charset.forName("UTF-8"));
-	Collection<MovieCharacter> extracted = this.extractor.extract(movieScript.split(NEW_LINE_REGEX));
+	Collection<String> extracted = this.extractor.extractCharactersNames(movieScript.split(NEW_LINE_REGEX));
 	MovieCharacter expected = new MovieCharacter();
 	expected.setId(0);
 	expected.setName("THREEPIO");

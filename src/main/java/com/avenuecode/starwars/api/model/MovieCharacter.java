@@ -3,10 +3,15 @@ package com.avenuecode.starwars.api.model;
 import java.util.Collection;
 import java.util.HashSet;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,11 +25,23 @@ public class MovieCharacter {
     private String name;
 
     @JsonIgnore
-    @OneToMany
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "character_setting", 
+    		joinColumns = @JoinColumn(name = "character_id", referencedColumnName = "id"), 
+    		inverseJoinColumns = @JoinColumn(name = "setting_id", referencedColumnName = "id"))
     private Collection<MovieSetting> settings = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="character")
     private Collection<WordCount> wordCounts = new HashSet<>();
+
+    public MovieCharacter() {
+	super();
+    }
+
+    public MovieCharacter(String name) {
+	super();
+	this.name = name;
+    }
 
     public int getId() {
 	return this.id;
@@ -96,5 +113,5 @@ public class MovieCharacter {
     public String toString() {
 	return String.format("MovieCharacter [id=%s, name=%s]", this.id, this.name);
     }
-    
+
 }

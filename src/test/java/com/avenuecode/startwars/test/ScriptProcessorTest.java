@@ -44,12 +44,12 @@ public class ScriptProcessorTest {
 	String pathname = "screenplay.txt";
 	URL systemResource = ClassLoader.getSystemResource(pathname);
 	String movieScript = IOUtils.toString(systemResource, Charset.forName("UTF-8"));
-	Collection<MovieSetting> postScript = postScript(movieScript);
+	postScript(movieScript);
     }
 
     private Collection<MovieSetting> postScript(String movieScript) throws Exception {
 	MovieScript ms = new MovieScript(movieScript);
-	Collection<MovieSetting> processed = this.proc.process(ms);
-	return processed;
+	this.proc.process(ms);
+	return null;
     }
 }

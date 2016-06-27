@@ -24,14 +24,14 @@ import com.avenuecode.starwars.api.service.extractors.WordCountExtractor;
 @SpringApplicationConfiguration(classes = Application.class)
 public class WordCountExtractorTest {
 
-    private WordCountExtractor extractor = new WordCountExtractor(null);
+    private WordCountExtractor extractor = new WordCountExtractor();
 
     @Test
     public void testSimpleWords() {
 
 	String string1 = "I see, sir. I see, sir Luke.";
 
-	Collection<WordCount> extracted = this.extractor.extract(string1);
+	Collection<WordCount> extracted = this.extractor.extract(null,string1);
 
 	WordCount expected1 = new WordCount("i", 2);
 	WordCount expected2 = new WordCount("see", 2);
@@ -46,7 +46,7 @@ public class WordCountExtractorTest {
 
 	String string1 = "Artoo-Detoo! It's you! It's you!";
 
-	Collection<WordCount> extracted = this.extractor.extract(string1);
+	Collection<WordCount> extracted = this.extractor.extract(null,string1);
 
 	WordCount expected1 = new WordCount("it's", 2);
 	WordCount expected2 = new WordCount("you", 2);

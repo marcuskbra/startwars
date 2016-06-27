@@ -9,38 +9,34 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
+import com.avenuecode.starwars.api.model.MovieCharacter;
 import com.avenuecode.starwars.api.model.WordCount;
 
-public class WordCountExtractor implements Extractor<String, Collection<WordCount>> {
+@Component
+public class WordCountExtractor {
 
     private static final String REGEX = "[\\s\\?\\-,;_\".!~*()]";
-    private final Extractor<?, ?> delegate;
 
-    public WordCountExtractor(final Extractor<?, ?> delegate) {
-	this.delegate = delegate;
-    }
+    public Collection<WordCount> extract(MovieCharacter movieCharacter, final String words) {
 
-    @Override
-    public Collection<WordCount> extract(final String words) {
-
-	Map<String, Integer> counts = mapAndCount(words);
-	List<WordCount> result = new ArrayList<WordCount>();
+	final Map<String, Integer> counts = mapAndCount(words);
+	final List<WordCount> result = new ArrayList<WordCount>();
 	counts.forEach((k, v) -> {
-	    result.add(new WordCount(k, v));
+	    WordCount w = new WordCount(k, v);
+	    w.setCharacter(movieCharacter);
+	    result.add(w);
 	});
 
-	if (this.delegate != null) {
-	    this.delegate.extract(null);
-	}
 
 	return result;
     }
 
     public Map<String, Integer> mapAndCount(final String words) {
 	if (StringUtils.isNotBlank(words)) {
-	    String[] splited = words.toLowerCase().split(REGEX);
-	    Map<String, Integer> counts = Arrays.asList(splited).stream()
+	    final String[] splited = words.toLowerCase().split(REGEX);
+	    final Map<String, Integer> counts = Arrays.asList(splited).stream()
 		    .filter(w -> StringUtils.isNotBlank(w))
 		    .collect(Collectors
 			    .toMap(w -> w, w -> 1, Integer::sum));

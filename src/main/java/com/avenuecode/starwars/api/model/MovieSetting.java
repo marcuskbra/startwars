@@ -3,7 +3,9 @@ package com.avenuecode.starwars.api.model;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
@@ -11,13 +13,21 @@ import javax.persistence.ManyToMany;
 public class MovieSetting {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    
+
     private String name;
-    
-    @ManyToMany
+
+    @ManyToMany(mappedBy = "settings", fetch=FetchType.LAZY)
     private Collection<MovieCharacter> characters;
+
+    public MovieSetting() {
+	super();
+    }
+
+    public MovieSetting(String name) {
+	this.name = name;
+    }
 
     public int getId() {
 	return this.id;
@@ -47,7 +57,6 @@ public class MovieSetting {
     public int hashCode() {
 	final int prime = 31;
 	int result = 1;
-	result = prime * result + ((this.characters == null) ? 0 : this.characters.hashCode());
 	result = prime * result + this.id;
 	result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
 	return result;
@@ -65,13 +74,6 @@ public class MovieSetting {
 	    return false;
 	}
 	MovieSetting other = (MovieSetting) obj;
-	if (this.characters == null) {
-	    if (other.characters != null) {
-		return false;
-	    }
-	} else if (!this.characters.equals(other.characters)) {
-	    return false;
-	}
 	if (this.id != other.id) {
 	    return false;
 	}
@@ -87,7 +89,6 @@ public class MovieSetting {
 
     @Override
     public String toString() {
-	return String.format("MovieSetting [id=%s, name=%s, characters=%s]", this.id, this.name, this.characters);
+	return String.format("MovieSetting [id=%s, name=%s]", this.id, this.name);
     }
-    
 }

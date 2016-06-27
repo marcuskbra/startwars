@@ -10,25 +10,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.avenuecode.starwars.api.model.MovieCharacter;
-import com.avenuecode.starwars.api.service.MovieCharacterService;
+import com.avenuecode.starwars.api.model.MovieSetting;
+import com.avenuecode.starwars.api.service.MovieSettingService;
 
 @RestController
-@RequestMapping(path = "/characters")
-public class MovieCharacterController {
+@RequestMapping(path = "/settings")
+public class MovieSettingController {
 
     @Autowired
-    private MovieCharacterService characterService;
+    private MovieSettingService settingService;
     
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody Collection<MovieCharacter> listAll() {
-	Collection<MovieCharacter> listAll = this.characterService.listAll();
-	
-	return listAll;
+    public @ResponseBody Collection<MovieSetting> listAll() {
+	return this.settingService.listAll();
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody MovieCharacter get(@PathVariable Integer id) {
-	return this.characterService.getOne(id);
+    public @ResponseBody MovieSetting get(@PathVariable Integer id) {
+	return this.settingService.getOne(id);
     }
 }

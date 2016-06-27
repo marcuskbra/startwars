@@ -1,25 +1,17 @@
 package com.avenuecode.starwars.api.service.extractors;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
-public class CharacterPhrasesExtractor implements Extractor<String[], Map<String, StringBuilder>> {
+@Component
+public class CharacterPhrasesExtractor {
 
-    private static final String CHARACTER_NAME_PREFIX = "                      ";
-    private static final String CHARACTER_SPEAK_PREFIX = "          ";
+    private static final String CHARACTER_NAME_REGEX = "(^\\s{22})\\S[A-Z].*$";
+    private static final String CHARACTER_PHRASE_REGEX = "(^\\s{10})\\S.*$";
 
-    @Override
-    public Map<String, StringBuilder> extract(final String[] settingLines) {
-	final Map<String, StringBuilder> phrases = extractPhrases(settingLines);
-
-
-	return phrases;
-    }
-
-    private Map<String, StringBuilder> extractPhrases(final String[] settingLines) {
-	final Map<String, StringBuilder> phrases = new HashMap<>();
+    public void extract(Map<String, StringBuilder> phrases, String[] settingLines) {
 
 	String characterName = null;
 	for (final String line : settingLines) {
@@ -28,20 +20,20 @@ public class CharacterPhrasesExtractor implements Extractor<String[], Map<String
 		if (!phrases.containsKey(characterName)) {
 		    phrases.put(characterName, new StringBuilder());
 		}
-	    } else if (isCharacterSpeaking(line)) {
+	    } else if (characterName != null && isCharacterSpeaking(line)) {
 		if (phrases.containsKey(characterName)) {
-		    phrases.get(characterName).append(" ").append(line.trim());
+		    phrases.get(characterName).append(line.trim()).append(" ");
 		}
 	    }
 	}
-	return phrases;
     }
 
     private boolean isCharacterSpeaking(final String line) {
-	return StringUtils.isNotBlank(line) && line.startsWith(CHARACTER_SPEAK_PREFIX);
+	return Pattern.matches(CHARACTER_PHRASE_REGEX, line);
     }
 
     private boolean isCharacterName(final String line) {
-	return StringUtils.isNotBlank(line) && line.startsWith(CHARACTER_NAME_PREFIX);
+	return Pattern.matches(CHARACTER_NAME_REGEX, line);
     }
+
 }
