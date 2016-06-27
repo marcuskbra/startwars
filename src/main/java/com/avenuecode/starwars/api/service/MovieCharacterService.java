@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.avenuecode.starwars.api.exception.ItemNotFoundException;
 import com.avenuecode.starwars.data.model.MovieCharacter;
 import com.avenuecode.starwars.data.model.WordCount;
 import com.avenuecode.starwars.data.repository.CharacterWordsRepository;
@@ -26,7 +27,7 @@ public class MovieCharacterService {
 	MovieCharacter character = this.characterRepository.findOne(id);
 	if (character == null) {
 	    final String msg = "Movie character with id %s not found";
-	    throw new IllegalArgumentException(String.format(msg, id));
+	    throw new ItemNotFoundException(String.format(msg, id));
 	}
 	setWordCounts(character);
 	return character;

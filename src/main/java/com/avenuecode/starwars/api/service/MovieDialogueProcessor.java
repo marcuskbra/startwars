@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.avenuecode.starwars.api.exception.DuplicatedScriptException;
 import com.avenuecode.starwars.api.service.extractors.CharacterPhrasesExtractor;
 import com.avenuecode.starwars.api.service.extractors.MovieSettingExtractor;
 import com.avenuecode.starwars.api.service.extractors.WordCountExtractor;
@@ -74,7 +75,7 @@ public class MovieDialogueProcessor {
 	if (!exists) {
 	    this.scriptRepository.save(script);
 	} else {
-	    throw new IllegalArgumentException("Movie script already received");
+	    throw new DuplicatedScriptException("Movie script already received");
 	}
     }
 }

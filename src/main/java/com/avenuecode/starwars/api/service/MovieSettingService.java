@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.avenuecode.starwars.api.exception.ItemNotFoundException;
 import com.avenuecode.starwars.data.model.MovieCharacter;
 import com.avenuecode.starwars.data.model.MovieSetting;
 import com.avenuecode.starwars.data.repository.MovieSettingRepository;
@@ -24,7 +25,7 @@ public class MovieSettingService {
 	final MovieSetting setting = this.settingRepository.findOne(id);
 	if (setting == null) {
 	    final String msg = "Movie setting with id %s not found";
-	    throw new IllegalArgumentException(String.format(msg, id));
+	    throw new ItemNotFoundException(String.format(msg, id));
 	}
 	final Collection<MovieCharacter> characters = findCharacters(setting);
 	setting.setCharacters(characters);
