@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import com.avenuecode.starwars.api.model.MovieCharacter;
-import com.avenuecode.starwars.api.model.WordCount;
+import com.avenuecode.starwars.data.model.MovieCharacter;
+import com.avenuecode.starwars.data.model.WordCount;
 
 @Component
 public class WordCountExtractor {

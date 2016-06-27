@@ -15,8 +15,8 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.avenuecode.starwars.Application;
-import com.avenuecode.starwars.api.model.MovieCharacter;
 import com.avenuecode.starwars.api.service.extractors.MovieCharacterExtractor;
+import com.avenuecode.starwars.data.model.MovieCharacter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)

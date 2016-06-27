@@ -9,17 +9,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.avenuecode.starwars.api.model.MovieCharacter;
-import com.avenuecode.starwars.api.model.MovieSetting;
-import com.avenuecode.starwars.api.model.WordCount;
-import com.avenuecode.starwars.api.repository.CharacterWordsRepository;
-import com.avenuecode.starwars.api.repository.MovieSettingRepository;
+import com.avenuecode.starwars.data.model.MovieCharacter;
+import com.avenuecode.starwars.data.model.MovieSetting;
+import com.avenuecode.starwars.data.model.WordCount;
+import com.avenuecode.starwars.data.repository.CharacterWordsRepository;
+import com.avenuecode.starwars.data.repository.MovieSettingRepository;
 
 @Service
 @Transactional(readOnly = true)
@@ -81,15 +78,12 @@ public class MovieSettingService {
 	final Collection<MovieCharacter> chars = this.svc.findMovieSettingId(setting.getId());
 
 	for (MovieCharacter character : chars) {
-	    List<WordCount> words = this.wordsRepository.findByCharacter(character, createPageable());
+	    List<WordCount> words = this.wordsRepository.findByCharacter(character, CharacterWordsRepository.PAGEABLE);
 	    character.setWordCounts(words);
 	}
 	return chars;
     }
 
-    public static Pageable createPageable() {
-	return new PageRequest(1, 10, Sort.Direction.DESC, "count", "word");
-    }
 
     public static <E> Collection<E> makeCollection(Iterable<E> iter) {
 	Collection<E> list = new ArrayList<E>();

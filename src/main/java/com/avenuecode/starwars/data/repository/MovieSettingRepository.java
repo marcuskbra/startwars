@@ -1,9 +1,9 @@
-package com.avenuecode.starwars.api.repository;
+package com.avenuecode.starwars.data.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.avenuecode.starwars.api.model.MovieSetting;
+import com.avenuecode.starwars.data.model.MovieSetting;
 
 @Transactional(readOnly=true)
 public interface MovieSettingRepository extends CrudRepository<MovieSetting, Integer> {

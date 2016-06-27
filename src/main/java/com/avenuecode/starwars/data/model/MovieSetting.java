@@ -1,4 +1,4 @@
-package com.avenuecode.starwars.api.model;
+package com.avenuecode.starwars.data.model;
 
 import java.util.Collection;
 

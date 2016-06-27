@@ -15,9 +15,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.avenuecode.starwars.Application;
-import com.avenuecode.starwars.api.model.MovieScript;
-import com.avenuecode.starwars.api.model.MovieSetting;
 import com.avenuecode.starwars.api.service.MovieDialogueProcessor;
+import com.avenuecode.starwars.data.model.MovieScript;
+import com.avenuecode.starwars.data.model.MovieSetting;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)

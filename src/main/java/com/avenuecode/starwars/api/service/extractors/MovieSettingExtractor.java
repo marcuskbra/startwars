@@ -10,9 +10,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.avenuecode.starwars.api.model.MovieCharacter;
-import com.avenuecode.starwars.api.model.MovieSetting;
-import com.avenuecode.starwars.api.repository.MovieSettingRepository;
+import com.avenuecode.starwars.data.model.MovieCharacter;
+import com.avenuecode.starwars.data.model.MovieSetting;
+import com.avenuecode.starwars.data.repository.MovieSettingRepository;
 
 @Component
 public class MovieSettingExtractor {

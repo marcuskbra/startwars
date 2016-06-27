@@ -7,13 +7,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.avenuecode.starwars.api.model.MovieCharacter;
-import com.avenuecode.starwars.api.model.MovieScript;
-import com.avenuecode.starwars.api.model.WordCount;
-import com.avenuecode.starwars.api.repository.MovieCharacterRepository;
 import com.avenuecode.starwars.api.service.extractors.CharacterPhrasesExtractor;
 import com.avenuecode.starwars.api.service.extractors.MovieSettingExtractor;
 import com.avenuecode.starwars.api.service.extractors.WordCountExtractor;
+import com.avenuecode.starwars.data.model.MovieCharacter;
+import com.avenuecode.starwars.data.model.MovieScript;
+import com.avenuecode.starwars.data.model.WordCount;
+import com.avenuecode.starwars.data.repository.MovieCharacterRepository;
 
 @Service
 public class MovieDialogueProcessor {

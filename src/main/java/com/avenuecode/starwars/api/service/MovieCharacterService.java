@@ -8,15 +8,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.avenuecode.starwars.api.model.MovieCharacter;
-import com.avenuecode.starwars.api.model.WordCount;
-import com.avenuecode.starwars.api.repository.CharacterWordsRepository;
-import com.avenuecode.starwars.api.repository.MovieCharacterRepository;
+import com.avenuecode.starwars.data.model.MovieCharacter;
+import com.avenuecode.starwars.data.model.WordCount;
+import com.avenuecode.starwars.data.repository.CharacterWordsRepository;
+import com.avenuecode.starwars.data.repository.MovieCharacterRepository;
 
 @Service
 public class MovieCharacterService {
@@ -36,10 +33,9 @@ public class MovieCharacterService {
     
     public Collection<MovieCharacter> findMovieSettingId(Integer id) {
 	
-	Pageable pageable = createPageable();
 	final Collection<MovieCharacter> collection = makeCollection(this.characterRepository.findBySettingsId(id));
 	for (MovieCharacter character : collection) {
-	    List<WordCount> words = this.wordsRepository.findByCharacter(character, pageable);
+	    List<WordCount> words = this.wordsRepository.findByCharacter(character, CharacterWordsRepository.PAGEABLE);
 	    character.setWordCounts(words);
 	}
 	return collection;
@@ -48,18 +44,13 @@ public class MovieCharacterService {
 
     public Collection<MovieCharacter> listAll() {
 
-	Pageable pageable = createPageable();
 	final Collection<MovieCharacter> collection = makeCollection(this.characterRepository.findAll());
 	for (MovieCharacter character : collection) {
-	    List<WordCount> words = this.wordsRepository.findByCharacter(character, pageable);
+	    List<WordCount> words = this.wordsRepository.findByCharacter(character, CharacterWordsRepository.PAGEABLE);
 	    character.setWordCounts(words);
 	}
 	return collection;
 
-    }
-
-    public Pageable createPageable() {
-	return new PageRequest(1, 10, Sort.Direction.DESC, "count", "word");
     }
 
     public boolean save(MovieCharacter mc) {

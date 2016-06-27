@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.avenuecode.starwars.api.model.MovieScript;
 import com.avenuecode.starwars.api.service.MovieDialogueProcessor;
+import com.avenuecode.starwars.data.model.MovieScript;
 
 @RestController
 public class ScriptController {

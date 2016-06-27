@@ -1,4 +1,4 @@
-package com.avenuecode.starwars.api.model;
+package com.avenuecode.starwars.data.model;
 
 //TODO: confirmar se precisa mesmo dessa classe
 public class MovieScript {

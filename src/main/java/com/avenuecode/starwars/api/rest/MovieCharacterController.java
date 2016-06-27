@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.avenuecode.starwars.api.model.MovieCharacter;
 import com.avenuecode.starwars.api.service.MovieCharacterService;
+import com.avenuecode.starwars.data.model.MovieCharacter;
 
 @RestController
 @RequestMapping(path = "/characters")
