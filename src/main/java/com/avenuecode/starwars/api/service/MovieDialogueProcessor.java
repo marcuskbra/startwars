@@ -14,6 +14,7 @@ import com.avenuecode.starwars.data.model.MovieCharacter;
 import com.avenuecode.starwars.data.model.MovieScript;
 import com.avenuecode.starwars.data.model.WordCount;
 import com.avenuecode.starwars.data.repository.MovieCharacterRepository;
+import com.avenuecode.starwars.data.repository.MovieScriptRepository;
 
 @Service
 public class MovieDialogueProcessor {
@@ -24,6 +25,9 @@ public class MovieDialogueProcessor {
 
     @Autowired
     private MovieCharacterRepository characterRepository;
+    
+    @Autowired
+    private MovieScriptRepository scriptRepository;
 
     @Autowired
     private MovieSettingExtractor settingExtractor;
@@ -36,6 +40,8 @@ public class MovieDialogueProcessor {
     
     public void process(final MovieScript script) {
 
+	validateScript(script);
+	
 	String content = script.getContent();
 	final String[] splitedSettings = content.split(SETTING_REGEX_LOOKAHEAD);
 
@@ -61,5 +67,14 @@ public class MovieDialogueProcessor {
 	});
 
 	this.characterRepository.save(characters.values());
+    }
+
+    public void validateScript(final MovieScript script) {
+	final boolean exists = this.scriptRepository.exists(script.getMd5());
+	if (!exists) {
+	    this.scriptRepository.save(script);
+	} else {
+	    throw new IllegalArgumentException("Movie script already received");
+	}
     }
 }

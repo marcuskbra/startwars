@@ -25,7 +25,7 @@ public class MovieCharacter {
     private String name;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinTable(name = "character_setting", 
     		joinColumns = @JoinColumn(name = "character_id", referencedColumnName = "id"), 
     		inverseJoinColumns = @JoinColumn(name = "setting_id", referencedColumnName = "id"))

@@ -78,7 +78,7 @@ public class MovieSettingService {
 	final Collection<MovieCharacter> chars = this.svc.findMovieSettingId(setting.getId());
 
 	for (MovieCharacter character : chars) {
-	    List<WordCount> words = this.wordsRepository.findByCharacter(character, CharacterWordsRepository.PAGEABLE);
+	    List<WordCount> words = this.wordsRepository.findTop10ByCharacterOrderByCountDesc(character);
 	    character.setWordCounts(words);
 	}
 	return chars;

@@ -8,6 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.avenuecode.starwars.data.model.MovieCharacter;
@@ -35,27 +38,26 @@ public class MovieCharacterService {
 	
 	final Collection<MovieCharacter> collection = makeCollection(this.characterRepository.findBySettingsId(id));
 	for (MovieCharacter character : collection) {
-	    List<WordCount> words = this.wordsRepository.findByCharacter(character, CharacterWordsRepository.PAGEABLE);
+	    List<WordCount> words = this.wordsRepository.findByCharacter(character, createPageRequest());
 	    character.setWordCounts(words);
 	}
 	return collection;
 	
     }
 
+    private Pageable createPageRequest() {
+	return new PageRequest(1, 10, new Sort(Sort.Direction.DESC, "count").and(new Sort(Sort.Direction.ASC, "word")));
+    }
+    
     public Collection<MovieCharacter> listAll() {
 
 	final Collection<MovieCharacter> collection = makeCollection(this.characterRepository.findAll());
 	for (MovieCharacter character : collection) {
-	    List<WordCount> words = this.wordsRepository.findByCharacter(character, CharacterWordsRepository.PAGEABLE);
+	    List<WordCount> words = this.wordsRepository.findTop10ByCharacterOrderByCountDesc(character);
 	    character.setWordCounts(words);
 	}
 	return collection;
 
-    }
-
-    public boolean save(MovieCharacter mc) {
-	this.characterRepository.save(mc);
-	return true;
     }
 
     public static <E> Collection<E> makeCollection(Iterable<E> iter) {

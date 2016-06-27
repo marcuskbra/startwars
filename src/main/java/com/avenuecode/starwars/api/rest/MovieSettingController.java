@@ -20,6 +20,11 @@ public class MovieSettingController {
     @Autowired
     private MovieSettingService settingService;
     
+    @RequestMapping(path = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody Collection<MovieSetting> listAll2() {
+	return this.settingService.listAll();
+    }
+    
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody Collection<MovieSetting> listAll() {
 	return this.settingService.findAll();
