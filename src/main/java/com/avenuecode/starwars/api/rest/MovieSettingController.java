@@ -1,7 +1,5 @@
 package com.avenuecode.starwars.api.rest;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,16 +18,11 @@ public class MovieSettingController {
     @Autowired
     private MovieSettingService settingService;
     
-    @RequestMapping(path = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody Collection<MovieSetting> listAll2() {
-	return this.settingService.listAll();
-    }
-    
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody Collection<MovieSetting> listAll() {
+    public @ResponseBody Iterable<MovieSetting> listAll() {
 	return this.settingService.findAll();
     }
-
+    
     @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody MovieSetting get(@PathVariable Integer id) {
 	return this.settingService.getOne(id);

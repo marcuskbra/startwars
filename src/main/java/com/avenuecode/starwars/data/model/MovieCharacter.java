@@ -25,22 +25,25 @@ public class MovieCharacter {
     private String name;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "character_setting", 
     		joinColumns = @JoinColumn(name = "character_id", referencedColumnName = "id"), 
     		inverseJoinColumns = @JoinColumn(name = "setting_id", referencedColumnName = "id"))
     private Collection<MovieSetting> settings = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="character")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "character")
     private Collection<WordCount> wordCounts = new HashSet<>();
 
     public MovieCharacter() {
-	super();
     }
 
     public MovieCharacter(String name) {
-	super();
 	this.name = name;
+    }
+
+    public MovieCharacter(int id, String name) {
+	this(name);
+	this.id = id;
     }
 
     public int getId() {

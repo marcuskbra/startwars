@@ -1,17 +1,11 @@
 package com.avenuecode.starwars.api.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.avenuecode.starwars.data.model.MovieCharacter;
 import com.avenuecode.starwars.data.model.WordCount;
@@ -19,6 +13,7 @@ import com.avenuecode.starwars.data.repository.CharacterWordsRepository;
 import com.avenuecode.starwars.data.repository.MovieCharacterRepository;
 
 @Service
+@Transactional(readOnly = true)
 public class MovieCharacterService {
 
     @Autowired
@@ -27,46 +22,41 @@ public class MovieCharacterService {
     @Autowired
     private CharacterWordsRepository wordsRepository;
 
-    @PersistenceContext
-    private EntityManager em;
-
     public MovieCharacter getOne(Integer id) {
-	return this.characterRepository.findOne(id);
+	MovieCharacter character = this.characterRepository.findOne(id);
+	if (character == null) {
+	    final String msg = "Movie character with id %s not found";
+	    throw new IllegalArgumentException(String.format(msg, id));
+	}
+	setWordCounts(character);
+	return character;
     }
-    
+
+    private void setWordCounts(MovieCharacter character) {
+	List<WordCount> words = findCharacterWords(character);
+	character.setWordCounts(words);
+    }
+
     public Collection<MovieCharacter> findMovieSettingId(Integer id) {
-	
-	final Collection<MovieCharacter> collection = makeCollection(this.characterRepository.findBySettingsId(id));
-	for (MovieCharacter character : collection) {
-	    List<WordCount> words = this.wordsRepository.findByCharacter(character, createPageRequest());
-	    character.setWordCounts(words);
+	List<MovieCharacter> settings = this.characterRepository.findBySettingsId(id);
+	for (MovieCharacter character : settings) {
+	    setWordCounts(character);
 	}
-	return collection;
-	
+	return settings;
     }
 
-    private Pageable createPageRequest() {
-	return new PageRequest(1, 10, new Sort(Sort.Direction.DESC, "count").and(new Sort(Sort.Direction.ASC, "word")));
+    private List<WordCount> findCharacterWords(MovieCharacter character) {
+	List<WordCount> words = this.wordsRepository.findTop10ByCharacterOrderByCountDesc(character);
+	return words;
     }
-    
-    public Collection<MovieCharacter> listAll() {
 
-	final Collection<MovieCharacter> collection = makeCollection(this.characterRepository.findAll());
-	for (MovieCharacter character : collection) {
-	    List<WordCount> words = this.wordsRepository.findTop10ByCharacterOrderByCountDesc(character);
-	    character.setWordCounts(words);
+    public Iterable<MovieCharacter> listAll() {
+	Iterable<MovieCharacter> characters = this.characterRepository.findAll();
+	for (MovieCharacter character : characters) {
+	    setWordCounts(character);
 	}
-	return collection;
+	return characters;
 
     }
 
-    public static <E> Collection<E> makeCollection(Iterable<E> iter) {
-	Collection<E> list = new ArrayList<E>();
-	if (iter != null) {
-	    for (E item : iter) {
-		list.add(item);
-	    }
-	}
-	return list;
-    }
 }

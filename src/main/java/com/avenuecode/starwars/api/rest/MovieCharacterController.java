@@ -1,7 +1,5 @@
 package com.avenuecode.starwars.api.rest;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,9 +19,8 @@ public class MovieCharacterController {
     private MovieCharacterService characterService;
     
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody Collection<MovieCharacter> listAll() {
-	Collection<MovieCharacter> listAll = this.characterService.listAll();
-	
+    public @ResponseBody Iterable<MovieCharacter> listAll() {
+	Iterable<MovieCharacter> listAll = this.characterService.listAll();
 	return listAll;
     }
 
