@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.avenuecode.starwars.api.service.MovieDialogueProcessor;
+import com.avenuecode.starwars.api.service.MovieScriptService;
 import com.avenuecode.starwars.data.model.MovieScript;
 
 @RestController
 public class ScriptController {
 
     @Autowired
-    private MovieDialogueProcessor processor;
+    private MovieScriptService service;
 
     @RequestMapping(path = "/script", method = RequestMethod.POST, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody Map<String, String> postScript(@RequestBody(required = true) String script) {
@@ -27,7 +27,7 @@ public class ScriptController {
 	final String md5 = DigestUtils.md5Hex(script);
 	final MovieScript movieScript = new MovieScript(md5, script);
 	
-	this.processor.process(movieScript);
+	this.service.processMovieScript(movieScript);
 
 	final Map<String, String> response = new HashMap<>();
 	response.put("message", "Movie script successfully received");

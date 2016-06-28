@@ -11,9 +11,11 @@ public class MovieCharacterExtractor {
     public Set<String> extractCharactersNames(final String[] settingLines) {
 	final Set<String> charactersNames = new HashSet<>();
 
-	for (final String line : settingLines) {
-	    if (isCharacterName(line)) {
-		charactersNames.add(line.trim());
+	if (settingLines != null) {
+	    for (final String line : settingLines) {
+		if (isCharacterName(line)) {
+		    charactersNames.add(line.trim());
+		}
 	    }
 	}
 	return charactersNames;

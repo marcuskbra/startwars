@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.avenuecode.starwars.api.exception.DuplicatedScriptException;
+import com.avenuecode.starwars.api.exception.InvalidMovieScriptException;
 import com.avenuecode.starwars.api.service.extractors.CharacterPhrasesExtractor;
 import com.avenuecode.starwars.api.service.extractors.MovieSettingExtractor;
 import com.avenuecode.starwars.api.service.extractors.WordCountExtractor;
@@ -18,7 +19,7 @@ import com.avenuecode.starwars.data.repository.MovieCharacterRepository;
 import com.avenuecode.starwars.data.repository.MovieScriptRepository;
 
 @Service
-public class MovieDialogueProcessor {
+public class MovieScriptService {
 
     private static final String NEW_LINE_REGEX = "\\r\\n|\\n|\\r";
     private static final String SETTING_REGEX = "\\b(INT\\.{1}\\/{1}EXT.\\s)\\b|\\b(INT.\\s)\\b|(EXT.\\s)\\b";
@@ -39,35 +40,56 @@ public class MovieDialogueProcessor {
     @Autowired
     private WordCountExtractor wordCountExtractor;
     
-    public void process(final MovieScript script) {
+    public void processMovieScript(final MovieScript script) {
 
 	validateScript(script);
 	
+	processScript(script);
+    }
+
+    private void processScript(final MovieScript script) {
 	String content = script.getContent();
 	final String[] splitedSettings = content.split(SETTING_REGEX_LOOKAHEAD);
 
-	final Map<String, MovieCharacter> characters = new HashMap<>();
+	final Map<String, MovieCharacter> characters = extractCharactersAndSettings(splitedSettings);
 
-	for (final String settingString : splitedSettings) {
-	    final String[] settingLines = settingString.split(NEW_LINE_REGEX);
-	    this.settingExtractor.extractCharactersAndSettings(characters, settingLines);
+	if (characters.keySet().isEmpty()) {
+	    throw new InvalidMovieScriptException();
 	}
+	
+	final Map<String, StringBuilder> phrases = extractPhrases(splitedSettings);
+	
+	countWords(characters, phrases);
 
+	this.characterRepository.save(characters.values());
+    }
 
+    private void countWords(final Map<String, MovieCharacter> characters, final Map<String, StringBuilder> phrases) {
+	phrases.forEach((k, v) -> {
+	    MovieCharacter movieCharacter = characters.get(k);
+	    final Collection<WordCount> words = this.wordCountExtractor.extract(movieCharacter, v.toString());
+	    movieCharacter.getWordCounts().addAll(words);
+	});
+    }
+
+    private Map<String, StringBuilder> extractPhrases(final String[] splitedSettings) {
 	final Map<String, StringBuilder> phrases = new HashMap<>();
 
 	for (final String settingString : splitedSettings) {
 	    final String[] settingLines = settingString.split(NEW_LINE_REGEX);
 	    this.phrasesExtractor.extract(phrases, settingLines);
 	}
-	
-	phrases.forEach((k, v) -> {
-	    MovieCharacter movieCharacter = characters.get(k);
-	    final Collection<WordCount> words = this.wordCountExtractor.extract(movieCharacter, v.toString());
-	    movieCharacter.getWordCounts().addAll(words);
-	});
+	return phrases;
+    }
 
-	this.characterRepository.save(characters.values());
+    private Map<String, MovieCharacter> extractCharactersAndSettings(final String[] splitedSettings) {
+	final Map<String, MovieCharacter> characters = new HashMap<>();
+
+	for (final String settingString : splitedSettings) {
+	    final String[] settingLines = settingString.split(NEW_LINE_REGEX);
+	    this.settingExtractor.extractCharactersAndSettings(characters, settingLines);
+	}
+	return characters;
     }
 
     public void validateScript(final MovieScript script) {
