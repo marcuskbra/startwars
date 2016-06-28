@@ -2,8 +2,8 @@
 
 ## Running test
 ```sh
-$ git clone [git-repo-url] startwars-challenge
-$ cd startwars-challenge
+$ git clone [git-repo-url] starwars-challenge
+$ cd starwars-challenge
 $ mvn test
 ```
 
