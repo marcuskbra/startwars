@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.avenuecode.starwars.data.model.MovieCharacter;
@@ -19,8 +21,12 @@ public class WordCountExtractor {
 
     private static final String REGEX = "[\\s\\?\\-,;_\".!~*()]";
 
+    private static final Logger LOG = LoggerFactory.getLogger(WordCountExtractor.class);
+    
     public Collection<WordCount> extract(MovieCharacter movieCharacter, final String words) {
 
+	LOG.info("Counting words of character " + movieCharacter.getName());
+	
 	final Map<String, Integer> counts = mapAndCount(words);
 	final List<WordCount> result = new ArrayList<WordCount>();
 	counts.forEach((k, v) -> {

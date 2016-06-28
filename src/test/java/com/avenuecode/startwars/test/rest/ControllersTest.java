@@ -2,9 +2,8 @@ package com.avenuecode.startwars.test.rest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -51,7 +50,7 @@ public class ControllersTest {
 		.content(movieScript)
 		.contentType(MediaType.TEXT_PLAIN)
 		.accept(MediaType.APPLICATION_JSON_UTF8))
-		.andDo(print())
+		//.andDo(print())
 		.andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(content().json("{\"message\":\"Movie script successfully received\"}"));
@@ -126,7 +125,7 @@ public class ControllersTest {
 		.content(movieScript)
 		.contentType(MediaType.TEXT_PLAIN)
 		.accept(MediaType.APPLICATION_JSON_UTF8))
-		.andDo(print())
+		//.andDo(print())
 		.andExpect(status().isForbidden())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(content().json("{\"message\":\"Movie script already received\"}"));

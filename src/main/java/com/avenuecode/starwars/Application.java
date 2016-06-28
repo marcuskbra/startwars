@@ -1,5 +1,7 @@
 package com.avenuecode.starwars;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -14,6 +16,7 @@ public class Application {
 
     public static void logStartupCompleted() {
 	StringBuilder sb = new StringBuilder();
+	sb.append("\n");
         sb.append(".___  ___.      ___      ____    ____    .___________. __    __   _______  \n");
         sb.append("|   \\/   |     /   \\     \\   \\  /   /    |           ||  |  |  | |   ____| \n");
         sb.append("|  \\  /  |    /  ^  \\     \\   \\/   /     `---|  |----`|  |__|  | |  |__    \n");
@@ -35,7 +38,10 @@ public class Application {
         sb.append("    \\    /\\    /    |  |     |  |     |  |  |  |        |  |     |  `--'  | |  `--'  | \n");
         sb.append("     \\__/  \\__/     |__|     |__|     |__|  |__|        |__|      \\______/   \\______/  \n");
         sb.append("\n");
-        System.out.println(sb.toString());
+        
+        Logger log = LoggerFactory.getLogger(Application.class);
+        
+        log.info(sb.toString());
     }
 
 }

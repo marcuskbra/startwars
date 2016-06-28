@@ -7,6 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,7 @@ public class MovieSettingExtractor {
 
     private static final String[] SCRIPT_TITLES_PREFIXES = new String[] { "INT. ", "EXT. ", "INT./EXT. " };
     private static final String SETTING_REGEX = "\\b(INT\\.{1}\\/{1}EXT.\\s)\\b|\\b(INT.\\s)\\b|(EXT.\\s)\\b";
+    private static final Logger LOG = LoggerFactory.getLogger(MovieSettingExtractor.class);
 
     @Autowired
     private MovieSettingRepository rep;
@@ -33,7 +36,8 @@ public class MovieSettingExtractor {
 		final MovieSetting movieSetting = getMovieSetting(settingTitle);
 
 		final String[] range = Arrays.copyOfRange(settingLines, 1, settingLines.length);
-
+		LOG.info("Extraction phrases from setting: " + settingTitle);
+		
 		final MovieCharacterExtractor characterExtractor = new MovieCharacterExtractor();
 		final Collection<String> phrases = characterExtractor.extractCharactersNames(range);
 		phrases.forEach(k -> {

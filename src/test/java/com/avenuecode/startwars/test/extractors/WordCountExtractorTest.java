@@ -26,6 +26,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.avenuecode.starwars.Application;
 import com.avenuecode.starwars.api.service.extractors.WordCountExtractor;
+import com.avenuecode.starwars.data.model.MovieCharacter;
 import com.avenuecode.starwars.data.model.WordCount;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,7 +40,7 @@ public class WordCountExtractorTest {
 
 	String string1 = "I see, sir. I see, sir Luke.";
 
-	Collection<WordCount> extracted = this.extractor.extract(null,string1);
+	Collection<WordCount> extracted = this.extractor.extract(new MovieCharacter("test-user"), string1);
 
 	WordCount expected1 = new WordCount("i", 2);
 	WordCount expected2 = new WordCount("see", 2);
@@ -54,7 +55,7 @@ public class WordCountExtractorTest {
 
 	String string1 = "Artoo-Detoo! It's you! It's you!";
 
-	Collection<WordCount> extracted = this.extractor.extract(null,string1);
+	Collection<WordCount> extracted = this.extractor.extract(new MovieCharacter("test-user"), string1);
 
 	WordCount expected1 = new WordCount("it's", 2);
 	WordCount expected2 = new WordCount("you", 2);

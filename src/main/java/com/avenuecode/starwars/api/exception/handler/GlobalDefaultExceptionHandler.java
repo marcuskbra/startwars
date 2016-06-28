@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +22,10 @@ import com.avenuecode.starwars.api.exception.ItemNotFoundException;
 @ControllerAdvice(basePackageClasses = Application.class)
 public class GlobalDefaultExceptionHandler {
 
+    private static final Logger LOG = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
     private static final String UNEXPECTED_ERROR = "Unexpected error";
-
+    
+    
     @ExceptionHandler(value = { ItemNotFoundException.class, DuplicatedScriptException.class })
     @ResponseBody
     ResponseEntity<?> handleAppException(final HttpServletRequest request, final Throwable ex) {
@@ -30,7 +34,7 @@ public class GlobalDefaultExceptionHandler {
 	if (annotation != null) {
 	    status = annotation.value();
 	}
-
+	LOG.error(ex.getMessage(), ex);
 	return getErrorResponse(status, ex.getMessage());
     }
 
@@ -38,6 +42,7 @@ public class GlobalDefaultExceptionHandler {
     @ResponseBody
     ResponseEntity<?> handleException(final HttpServletRequest request, final Throwable ex) {
 	final HttpStatus status = getStatus(request);
+	LOG.error(UNEXPECTED_ERROR, ex);
 	return getErrorResponse(status, UNEXPECTED_ERROR);
     }
 
